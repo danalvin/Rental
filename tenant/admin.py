@@ -1,6 +1,9 @@
 from django.contrib import admin
-from .models import tenant
+from .models import Tenant
 
-# Register your models here.
 
-admin.site.register(tenant)
+class TenantAdmin(admin.ModelAdmin):
+    list_display = ('First_name', 'Phone_number', 'ID_number')
+    search_fields = ('full_name', 'phone_number', 'ID_number')
+
+admin.site.register(Tenant, TenantAdmin)

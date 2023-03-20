@@ -3,19 +3,17 @@ from tenant.models import tenant
 
 # Create your models here.
 
-class house(models.Model):
-    housenumber = models.PositiveIntegerField(unique=True, )
-    # tenant = models.ForeignKey(on_delete=models.DO_NOTHING, to=tenant)
-    # Water = models.PositiveIntegerField()
-    # internet_subscription = models.PositiveIntegerField()
-    rent = models.PositiveIntegerField()
+class House(models.Model):
+    house_name = models.CharField(max_length=50)
+    rent = models.DecimalField(max_digits=8, decimal_places=2)
+    utilities = models.TextField()
+    water_meter_reading = models.PositiveIntegerField(default=0)
+    rent_status = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.housenumber
+        return self.house_name
 
-
-
-
-# send message - {{ occupation.tenant.phonenumber }}, of house number {{ occupation.house.housenumber }}, of pending rent bill of ksh 
-# {{ occupation.house.rent }}, water utility bill of ({{ occupation.water.current_reading }} - {{ occupation.water.previous_reading }} * 100) and internet usage of {{ occupation.wifi.speed }} of 
-# {{ occupation.wifi.price }} please make a payment to this number. 
+    def update_rent_status(self):
+        if self.rent_status == False and self.water_meter_reading > 0:
+            self.rent_status = True
+            self.save()
