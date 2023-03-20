@@ -1,3 +1,4 @@
+from datetime import timezone
 from django.db import models
 from tenant.models import tenant
 
@@ -17,3 +18,13 @@ class House(models.Model):
         if self.rent_status == False and self.water_meter_reading > 0:
             self.rent_status = True
             self.save()
+
+            
+class MeterReading(models.Model):
+    house = models.ForeignKey(House, on_delete=models.CASCADE, related_name='meter_readings')
+    reading_date = models.DateField(default=timezone.now)
+    previous_reading = models.DecimalField(max_digits=10, decimal_places=2)
+    current_reading = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.house.name} - {self.reading_date}"
