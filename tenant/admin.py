@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tenant
+from .models import tenant as Tenant
 
 
 class TenantAdmin(admin.ModelAdmin):
@@ -7,3 +7,4 @@ class TenantAdmin(admin.ModelAdmin):
     search_fields = ('full_name', 'phone_number', 'ID_number')
 
 admin.site.register(Tenant, TenantAdmin)
+

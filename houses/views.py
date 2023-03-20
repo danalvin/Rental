@@ -1,65 +1,64 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views import View
-from django.contrib import messages
-from .models import MeterReading
-from .forms import MeterReadingForm
-
-
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, UpdateView
+from django.shortcuts import render
 from django.urls import reverse_lazy
-from .models import House, MeterReading
-from .forms import MeterReadingForm
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
-class HouseListView(ListView):
+from .models import House, MeterReading
+from .forms import HouseForm, RentForm, MeterReadingForm
+
+
+class HouseListView(LoginRequiredMixin, ListView):
     model = House
     template_name = 'houses/house_list.html'
+    context_object_name = 'houses'
+    ordering = ['name']
 
-class HouseDetailView(DetailView):
+
+class HouseDetailView(LoginRequiredMixin, DetailView):
     model = House
     template_name = 'houses/house_detail.html'
+    context_object_name = 'house'
 
-class HouseUpdateView(UpdateView):
+
+class HouseCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = House
-    fields = ['rent_amount', 'rent_due_date', 'rent_status']
-    template_name = 'houses/house_update.html'
-
-# class MeterReadingUpdateView(UpdateView):
-#     model = MeterReading
-#     form_class = MeterReadingForm
-#     template_name = 'houses/meter_reading_update.html'
-
-#     def form_valid(self, form):
-#         house = get_object_or_404(House, pk=self.kwargs['pk'])
-#         meter_reading = form.save(commit=False)
-#         meter_reading.house = house
-#         meter_reading.previous_reading = house.current_reading
-#         meter_reading.consumption = meter_reading.current_reading - house.current_reading
-#         house.current_reading = meter_reading.current_reading
-#         house.save()
-#         meter_reading.save()
-#         return redirect('houses:house_detail', pk=house.pk)
+    form_class = HouseForm
+    template_name = 'houses/house_form.html'
+    success_url = reverse_lazy('houses:house_list')
+    success_message = 'House successfully created.'
 
 
-class UpdateMeterReadingView(View):
-    template_name = 'occupation/meter_reading.html'
+class HouseUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = House
+    form_class = HouseForm
+    template_name = 'houses/house_form.html'
+    success_url = reverse_lazy('houses:house_list')
+    success_message = 'House successfully updated.'
 
-    def get(self, request, house_id):
-        house = get_object_or_404(House, pk=house_id)
-        latest_reading = MeterReading.objects.filter(house=house).latest('reading_date')
-        form = MeterReadingForm(instance=latest_reading)
-        context = {'form': form, 'house': house}
-        return render(request, self.template_name, context)
 
-    def post(self, request, house_id):
-        house = get_object_or_404(House, pk=house_id)
-        latest_reading = MeterReading.objects.filter(house=house).latest('reading_date')
-        form = MeterReadingForm(request.POST, instance=latest_reading)
-        if form.is_valid():
-            meter_reading = form.save(commit=False)
-            meter_reading.house = house
-            meter_reading.save()
-            messages.success(request, "Meter reading updated successfully.")
-            return redirect('home')
-        context = {'form': form, 'house': house}
-        return render(request, self.template_name, context)
+class MeterReadingCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = MeterReading
+    form_class = MeterReadingForm
+    template_name = 'houses/meter_reading_form.html'
+    success_url = reverse_lazy('houses:house_list')
+    success_message = 'Meter reading successfully updated.'
+
+    def form_valid(self, form):
+        form.instance.current_reading -= form.instance.previous_reading
+        return super().form_valid(form)
+
+
+class RentUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = House
+    form_class = RentForm
+    template_name = 'houses/rent_form.html'
+    success_url = reverse_lazy('houses:house_list')
+    success_message = 'Rent successfully updated.'
+
+
+    def get_initial(self):
+        initial = super().get_initial()
+        house = self.get_object()
+        initial['rent'] = house.rent_amount
+        return initial

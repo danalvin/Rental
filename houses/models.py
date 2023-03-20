@@ -1,4 +1,4 @@
-from datetime import timezone
+from django.utils import timezone
 from django.db import models
 from tenant.models import tenant
 
@@ -28,3 +28,18 @@ class MeterReading(models.Model):
 
     def __str__(self):
         return f"{self.house.name} - {self.reading_date}"
+
+
+class Rent(models.Model):
+    tenant = models.ForeignKey(tenant, on_delete=models.CASCADE)
+    house = models.ForeignKey(House, on_delete=models.CASCADE, related_name='rented')
+    amount = models.DecimalField(max_digits=8, decimal_places=2)
+    start_date = models.DateField()
+    end_date = models.DateField()
+
+class Payment(models.Model):
+    tenant = models.ForeignKey(tenant, on_delete=models.CASCADE, related_name='test')
+    house = models.ForeignKey(House, on_delete=models.CASCADE)
+    rent = models.ForeignKey(Rent, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=8, decimal_places=2)
+    date = models.DateField(default=timezone.now)

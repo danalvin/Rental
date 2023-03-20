@@ -1,4 +1,4 @@
-from datetime import timezone
+from django.utils import timezone
 from django.db import models
 from houses.models import House
 from tenant.models import tenant as Tenant
@@ -19,7 +19,7 @@ class Occupation(models.Model):
     house = models.ForeignKey(House, on_delete=models.CASCADE)
     start_date = models.DateField(default=timezone.now)
     rent_due_date = models.DateField(blank=True, null=True)
-    rent_amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    rent_amount = models.DecimalField(max_digits=10, decimal_places=2)
     occupied = models.BooleanField(default=True)
 
     def __str__(self):
@@ -51,7 +51,7 @@ class Vacation(models.Model):
 
 
 class Payment(models.Model):
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, related_name='trial')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(auto_now_add=True)
     

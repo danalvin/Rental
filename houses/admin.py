@@ -1,8 +1,11 @@
+from django.conf import settings
 from django.contrib import admin
 from django.shortcuts import redirect, render
 from django.urls import path, reverse
 from django.utils.html import format_html
 from datetime import timezone
+from django.core.mail import send_mail
+
 
 from houses.forms import MeterReadingForm, RentForm
 
@@ -21,8 +24,8 @@ class PaymentInline(admin.TabularInline):
 
 class HouseAdmin(admin.ModelAdmin):
     inlines = [RentInline, PaymentInline]
-    list_display = ('house_name', 'address', 'rent_amount', 'meter_reading', 'get_rent_status')
-    list_filter = ('rent__date',)
+    list_display = ('house_name', 'rent_status', 'water_meter_reading')
+    list_filter = ('rent',)
     search_fields = ('house_name', 'address')
 
     def get_rent_status(self, obj):
@@ -78,6 +81,19 @@ class HouseAdmin(admin.ModelAdmin):
         else:
             form = RentForm()
         return render(request, 'admin/houses/house/update_rent.html', {'form': form, 'house': house})
+
+    def send_water_meter_reading_reminder_email(self, request, queryset):
+        for house in queryset:
+            occupation_set = house.occupation_set.all()
+            for occupation in occupation_set:
+                tenant_email = occupation.tenant.email
+                subject = f'Water Meter Reading Reminder for {house.house_number}'
+                message = f'Dear {occupation.tenant.full_name},\n\nThis is a reminder to submit the water meter reading for {house.house_number}. Please submit the water meter reading as soon as possible.\n\nThank you.'
+                from_email = settings.EMAIL_HOST_USER
+                send_mail(subject, message, from_email, [tenant_email])
+        self.message_user(request, 'Water meter reading reminder email sent successfully.')
+    send_water_meter_reading_reminder_email.short_description = 'Send water meter reading reminder email to selected tenants'
+
 
 
 admin.site.register(House, HouseAdmin)

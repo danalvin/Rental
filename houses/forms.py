@@ -29,11 +29,11 @@ class RentForm(forms.Form):
 class MeterReadingForm(forms.ModelForm):
     class Meta:
         model = MeterReading
-        fields = ('house', 'reading', 'reading_date')
+        fields = ('house', 'current_reading', 'reading_date')
         
     def clean_reading(self):
         house = self.cleaned_data.get('house')
-        reading = self.cleaned_data.get('reading')
-        if reading < house.last_meter_reading:
+        reading = self.cleaned_data.get('current_reading')
+        if current_reading < house.previous_reading:
             raise forms.ValidationError('Meter reading cannot be less than the previous reading.')
-        return reading
+        return current_reading
