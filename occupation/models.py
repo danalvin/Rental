@@ -25,6 +25,7 @@ class Occupation(models.Model):
     def __str__(self):
         return f"{self.tenant} - {self.house} ({self.start_date} to {self.rent_due_date})"
     
+    
 
 class Vacation(models.Model):
     occupation = models.ForeignKey(Occupation, on_delete=models.CASCADE)

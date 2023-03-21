@@ -20,8 +20,8 @@ class OccupationAdmin(admin.ModelAdmin):
     def send_rent_due_reminder_email(self, request, queryset):
         for occupation in queryset:
             tenant_email = occupation.tenant.email
-            subject = f'Rent Due Reminder for {occupation.house.house_number}'
-            message = f'Dear {occupation.tenant.full_name},\n\nThis is a reminder that the rent for {occupation.house.house_number} is due on {occupation.rent_due_date}. Please ensure that payment is made on or before the due date.\n\nThank you.'
+            subject = f'Rent Due Reminder for {occupation.house.house_name}'
+            message = f'Dear {occupation.tenant.First_name},\n\nThis is a reminder that the rent for {occupation.house.house_name} is due on {occupation.rent_due_date}. Please ensure that payment is made on or before the due date.\n\nThank you.'
             from_email = settings.EMAIL_HOST_USER
             send_mail(subject, message, from_email, [tenant_email])
         self.message_user(request, 'Rent due reminder email sent successfully.')
