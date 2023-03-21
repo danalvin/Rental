@@ -100,6 +100,15 @@ class MeterReadingAdmin(admin.ModelAdmin):
     house_name.admin_order_field = 'house__name'
     house_name.short_description = 'House Name'
 
+
+
+from django.contrib.admin import AdminSite
+
+class MyAdminSite(AdminSite):
+    site_title = 'Rental management System'  # Change the title displayed in the browser tab
+    site_header = 'Rental management System'  # Change the title displayed on the page
+    index_title = 'Welcome to Beracah apartments rental management system'  # Change the welcome text displayed on the dashboard
+
 admin.site.register(MeterReading, MeterReadingAdmin)
 
 admin.site.register(House, HouseAdmin)
