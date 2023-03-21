@@ -5,10 +5,10 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 from houses.models import House
-from .models import Tenant, Occupation, Payment
+from .models import Occupation, Payment
 
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('tenant', 'amount', 'date')
+    list_display = ('amount', 'date', 'occupation_name')
     list_filter = ('date',)
     search_fields = ('tenant__full_name', 'occupation__house__house_number')
 

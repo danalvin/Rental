@@ -6,9 +6,9 @@ from .models import Tenant
 class TenantModelTestCase(TestCase):
     def setUp(self):
         Tenant.objects.create(
-            first_name="John",
-            last_name="Doe",
-            email="johndoe@example.com",
+            First_name="John",
+            Second_name="Doe",
+            ID_numnber="1234567890",
             phone_number="1234567890"
         )
 

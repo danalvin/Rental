@@ -23,23 +23,8 @@ class Occupation(models.Model):
     occupied = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.tenant} - {self.house} ({self.start_date} to {self.end_date})"
-
-    @property
-    def end_date(self):
-        return self.vacation_set.last().end_date if not self.occupied else None
-
-    def update_rent_due_date(self):
-        last_vacation = self.vacation_set.order_by("-end_date").first()
-        if last_vacation:
-            self.rent_due_date = last_vacation.end_date
-        else:
-            self.rent_due_date = self.start_date
-
-    def save(self, *args, **kwargs):
-        self.update_rent_due_date()
-        super().save(*args, **kwargs)
-
+        return f"{self.tenant} - {self.house} ({self.start_date} to {self.rent_due_date})"
+    
 
 class Vacation(models.Model):
     occupation = models.ForeignKey(Occupation, on_delete=models.CASCADE)
@@ -50,10 +35,15 @@ class Vacation(models.Model):
         return f"{self.occupation.tenant} - {self.occupation.house} ({self.start_date} to {self.end_date})"
 
 
+
 class Payment(models.Model):
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, related_name='trial')
+    occupation = models.ForeignKey(Occupation, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateField(auto_now_add=True)
-    
+    date = models.DateField(default=timezone.now)
+
     def __str__(self):
-        return f"{self.tenant.full_name} paid {self.amount} on {self.date}"
+        return f"{self.occupation.house.house_name} payment of {self.amount} on {self.date}"
+    
+
+    def occupation_name(self):
+        return self.occupation.tenant

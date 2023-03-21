@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 
 from houses.forms import MeterReadingForm, RentForm
 
-from .models import House, Rent, Payment, MeterReading
+from .models import House, Rent, MeterReading
 
 
 class RentInline(admin.TabularInline):
@@ -17,13 +17,9 @@ class RentInline(admin.TabularInline):
     extra = 1
 
 
-class PaymentInline(admin.TabularInline):
-    model = Payment
-    extra = 1
-
 
 class HouseAdmin(admin.ModelAdmin):
-    inlines = [RentInline, PaymentInline]
+    inlines = [RentInline]
     list_display = ('house_name', 'rent_status', 'water_meter_reading')
     list_filter = ('rent',)
     search_fields = ('house_name', 'address')
@@ -95,7 +91,16 @@ class HouseAdmin(admin.ModelAdmin):
     send_water_meter_reading_reminder_email.short_description = 'Send water meter reading reminder email to selected tenants'
 
 
+class MeterReadingAdmin(admin.ModelAdmin):
+    list_display = ('house_name', 'reading_date', 'previous_reading', 'current_reading', 'consumption')
+    readonly_fields = ('consumption',)
+
+    def house_name(self, obj):
+        return obj.house.house_name
+    house_name.admin_order_field = 'house__name'
+    house_name.short_description = 'House Name'
+
+admin.site.register(MeterReading, MeterReadingAdmin)
 
 admin.site.register(House, HouseAdmin)
-admin.site.register(Payment)
-admin.site.register(MeterReading)
+admin.site.register(Rent)
