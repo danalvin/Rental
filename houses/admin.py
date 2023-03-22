@@ -5,6 +5,15 @@ from django.urls import path, reverse
 from django.utils.html import format_html
 from datetime import timezone
 from django.core.mail import send_mail
+import africastalking
+
+africastalking.initialize('sandbox', '56dcc2bbb99125c299583f286a9355279b280d3830dfcbe6363534f7c8110de6')
+
+
+def send_sms(message, recipients):
+    sms = africastalking.SMS
+    response = sms.send(message, recipients)
+    return response
 
 
 from houses.forms import MeterReadingForm, RentForm
@@ -23,6 +32,7 @@ class HouseAdmin(admin.ModelAdmin):
     list_display = ('house_name', 'rent_status', 'water_meter_reading')
     list_filter = ('rent',)
     search_fields = ('house_name', 'address')
+    actions = ('send_water_meter_reading_reminder_email', 'send_water_meter_reading_reminder_text')
 
     def get_rent_status(self, obj):
         latest_rent = obj.rent_set.last()
@@ -89,6 +99,19 @@ class HouseAdmin(admin.ModelAdmin):
                 send_mail(subject, message, from_email, [tenant_email])
         self.message_user(request, 'Water meter reading reminder email sent successfully.')
     send_water_meter_reading_reminder_email.short_description = 'Send water meter reading reminder email to selected tenants'
+    
+    
+    def send_water_meter_reading_reminder_text(self, request, queryset):
+        for house in queryset:
+            occupation_set = house.occupation_set.all()
+            for occupation in occupation_set:
+                tenant_phone = occupation.tenant.Phone_number
+                message = f'Dear {occupation.tenant.full_name},\n\nThis is a reminder to submit the water meter reading for {house.house_number}. Please submit the water meter reading as soon as possible.\n\nThank you.'
+                recipients = tenant_phone
+                responce=send_sms(message, recipients)
+        self.message_user(request, 'Water meter reading reminder email sent successfully.')
+        print(responce)
+    send_water_meter_reading_reminder_text.short_description = 'Send water meter reading reminder email to selected tenants'
 
 
 class MeterReadingAdmin(admin.ModelAdmin):

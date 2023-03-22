@@ -1,3 +1,4 @@
+from datetime import date
 from django.utils import timezone
 from django.db import models
 from houses.models import House
@@ -24,6 +25,11 @@ class Occupation(models.Model):
 
     def __str__(self):
         return f"{self.tenant} - {self.house} ({self.start_date} to {self.rent_due_date})"
+    
+    def is_rent_due(self):
+        # Check if the rent is due today or earlier
+        today = date.today()
+        return today >= self.rent_due_date
     
     
 
