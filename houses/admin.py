@@ -106,7 +106,7 @@ class HouseAdmin(admin.ModelAdmin):
             occupation_set = house.occupation_set.all()
             for occupation in occupation_set:
                 tenant_phone = occupation.tenant.Phone_number
-                message = f'Dear {occupation.tenant.full_name},\n\nThis is a reminder to submit the water meter reading for {house.house_number}. Please submit the water meter reading as soon as possible.\n\nThank you.'
+                message = f'Dear {occupation.tenant.full_name},\n\nThis is a reminder to submit the water meter reading and rent for {house.house_number}. Please submit the water meter reading as soon as possible.\n\nThank you.'
                 recipients = tenant_phone
                 responce=send_sms(message, recipients)
         self.message_user(request, 'Water meter reading reminder email sent successfully.')

@@ -26,6 +26,7 @@ class MeterReading(models.Model):
     previous_reading = models.DecimalField(max_digits=10, decimal_places=2)
     current_reading = models.DecimalField(max_digits=10, decimal_places=2)
     consumption = models.PositiveIntegerField()
+    Cost = models.PositiveIntegerField()
 
     def __str__(self):
         return f"{self.house.house_name} - {self.reading_date}"
@@ -43,6 +44,7 @@ class MeterReading(models.Model):
             else:
                 self.previous_reading = 0
         self.consumption = self.current_reading - self.previous_reading
+        self.cost = self.consumption*150
 
         # Set the previous reading for the next meter reading
         next_reading = MeterReading.objects.filter(house=self.house, reading_date__gt=self.reading_date).order_by('reading_date').first()
