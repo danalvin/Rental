@@ -1,3 +1,4 @@
+import datetime
 from django.utils import timezone
 from django.db import models
 from tenant.models import tenant
@@ -19,6 +20,28 @@ class House(models.Model):
             self.rent_status = True
             self.save()
 
+    def get_previous_readings(self, days=30):
+        """
+        Returns a queryset of previous meter readings for this house.
+        """
+        start_date = datetime.now() - datetime.timedelta(days=days)
+        return self.meter_readings.filter(reading_date__gte=start_date).order_by('-reading_date')
+
+    def get_expected_usage(self, days=30):
+        """
+        Calculates the expected water usage (in liters) for the past `days` days.
+        """
+        previous_readings = self.get_previous_readings(days=days)
+
+        if not previous_readings.exists():
+            return 0
+
+        total_consumption = sum([reading.consumption for reading in previous_readings])
+        avg_consumption = total_consumption / previous_readings.count()
+
+        expected_usage = avg_consumption * days
+        return expected_usage
+    
 
 class MeterReading(models.Model):
     house = models.ForeignKey(House, on_delete=models.CASCADE, related_name='meter_readings')
