@@ -115,7 +115,7 @@ class HouseAdmin(admin.ModelAdmin):
 
 
 class MeterReadingAdmin(admin.ModelAdmin):
-    list_display = ('house_name', 'reading_date', 'previous_reading', 'current_reading', 'consumption')
+    list_display = ('house_name', 'reading_date', 'current_reading', 'consumption')
     readonly_fields = ('consumption',)
 
     def house_name(self, obj):
