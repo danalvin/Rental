@@ -84,3 +84,14 @@ class Rent(models.Model):
 
     def __str__(self):
         return f"{self.amount}"
+
+
+class UtilityPayment(models.Model):
+    house = models.ForeignKey(House, on_delete=models.CASCADE, related_name='utility_payments')
+    utility_name = models.CharField(max_length=50)
+    amount = models.DecimalField(max_digits=8, decimal_places=2)
+    payment_date = models.DateField(default=timezone.now)
+    
+
+    def __str__(self):
+        return f"{self.house.house_name} - {self.utility_name}"
