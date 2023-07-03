@@ -1,0 +1,418 @@
+:root {
+    --dark-color: hsl(var(--hue), 100%, 9%);
+    --light-color: hsl(var(--hue), 95%, 98%);
+    --base: hsl(var(--hue), 95%, 50%);
+    --complimentary1: hsl(var(--hue-complimentary1), 95%, 50%);
+    --complimentary2: hsl(var(--hue-complimentary2), 95%, 50%);
+  
+    --font-family: "Poppins", system-ui;
+  
+    --bg-gradient: linear-gradient(
+      to bottom,
+      hsl(var(--hue), 95%, 99%),
+      hsl(var(--hue), 95%, 84%)
+    );
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    max-width: 1920px;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+    font-family: var(--font-family);
+    color: var(--dark-color);
+    background: var(--bg-gradient);
+  }
+  
+  .orb-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  strong {
+    font-weight: 600;
+  }
+  
+  .overlay {
+    max-width: 1140px;
+    max-height: auto;
+    padding: 8rem 6rem;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.375);
+    box-shadow: 0 0.75rem 2rem 0 rgba(0, 0, 0, 0.1);
+    border-radius: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+  }
+  
+  .overlay__inner {
+    max-width: 36rem;
+  }
+  
+  .overlay__title {
+    font-size: 1.875rem;
+    line-height: 2.75rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin-bottom: 2rem;
+  }
+  
+  .text-gradient {
+    background-image: linear-gradient(
+      45deg,
+      var(--base) 25%,
+      var(--complimentary2)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+  }
+  
+  .overlay__description {
+    font-size: 1rem;
+    line-height: 1.75rem;
+    margin-bottom: 3rem;
+  }
+  
+  .overlay__btns {
+    width: 100%;
+    max-width: 30rem;
+    display: flex;
+  }
+  
+  .overlay__btn {
+    width: 50%;
+    height: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #000000;
+    background: #94a3b8;
+    border: none;
+    border-radius: 0.5rem;
+    transition: transform 150ms ease;
+    outline-color: hsl(var(--hue), 95%, 50%);
+}
+  
+  .overlay__btn:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+  
+  .overlay__btn--transparent {
+    background: transparent;
+    color: var(--dark-color);
+    border: 2px solid var(--dark-color);
+    border-width: 2px;
+    margin-right: 0.75rem;
+  }
+  
+  .overlay__btn-emoji {
+    margin-left: 0.375rem;
+  }
+  
+  a {
+    text-decoration: none;
+    color: var(--dark-color);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Not too many browser support this yet but it's good to add! */
+  @media (prefers-contrast: high) {
+    .orb-canvas {
+      display: none;
+    }
+  }
+  
+  @media only screen and (max-width: 1140px) {
+    .overlay {
+      padding: 8rem 4rem;
+    }
+  }
+  
+  @media only screen and (max-width: 840px) {
+    body {
+      padding: 1.5rem;
+    }
+  
+    .overlay {
+      padding: 4rem;
+      height: auto;
+    }
+  
+    .overlay__title {
+      font-size: 1.25rem;
+      line-height: 2rem;
+      margin-bottom: 1.5rem;
+    }
+  
+    .overlay__description {
+      font-size: 0.875rem;
+      line-height: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .overlay {
+      padding: 1.5rem;
+    }
+  
+    .overlay__btns {
+      flex-wrap: wrap;
+    }
+  
+    .overlay__btn {
+      width: 100%;
+      font-size: 0.75rem;
+      margin-right: 0;
+    }
+  
+    .overlay__btn:first-child {
+      margin-bottom: 1rem;
+    }
+  }
+  
+
+  @import url("https://fonts.googleapis.com/css?family=Roboto:400,500");
+* {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+input, textarea {
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  outline: none;
+  appearance: none;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+form .form-content {
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px;
+}
+form .form-content .input {
+  position: relative;
+}
+form .form-content .input.text, form .form-content .input.textarea {
+  margin-bottom: 15px;
+  padding-top: 23px;
+  min-height: 50px;
+}
+form .form-content .input.text input, form .form-content .input.text textarea, form .form-content .input.textarea input, form .form-content .input.textarea textarea {
+  display: block;
+  background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 7px;
+  width: 100%;
+}
+form .form-content .input.text input:focus ~ label, form .form-content .input.text input.filled ~ label, form .form-content .input.text textarea:focus ~ label, form .form-content .input.text textarea.filled ~ label, form .form-content .input.textarea input:focus ~ label, form .form-content .input.textarea input.filled ~ label, form .form-content .input.textarea textarea:focus ~ label, form .form-content .input.textarea textarea.filled ~ label {
+  top: 0;
+  font-size: 12px;
+}
+form .form-content .input.text label, form .form-content .input.textarea label {
+  position: absolute;
+  left: 0;
+  top: 20px;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 400;
+  transition: 0.2s;
+  pointer-events: none;
+}
+form .form-content .input.textarea textarea {
+  height: 100px;
+  resize: vertical;
+}
+form .form-content .input.select {
+  position: relative;
+}
+form .form-content .input.select .head {
+  position: relative;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-top: 23px;
+  min-height: 50px;
+  cursor: pointer;
+}
+form .form-content .input.select .head label {
+  position: absolute;
+  left: 0;
+  top: 20px;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 400;
+  cursor: pointer;
+}
+form .form-content .input.select .head .value {
+  display: none;
+  color: rgba(0, 0, 0, 0.8);
+}
+form .form-content .input.select .head:after {
+  display: block;
+  content: "";
+  position: absolute;
+  margin-top: 6px;
+  border-style: solid;
+  border-width: 5px 5px 0 5px;
+  border-color: rgba(0, 0, 0, 0.3) transparent transparent transparent;
+  top: 50%;
+  right: 0;
+  width: 0;
+  height: 0;
+}
+form .form-content .input.select .input-desc {
+  margin-bottom: 15px;
+  margin-top: -10px;
+}
+form .form-content .input.select .body {
+  display: none;
+  position: absolute;
+  background: #fff;
+  top: 0;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+form .form-content .input.select .body ul {
+  padding: 5px 0;
+  max-height: 220px;
+  overflow: auto;
+}
+form .form-content .input.select .body ul li {
+  padding: 12px 15px;
+  color: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
+form .form-content .input.select .body ul li.selected {
+  background: rgba(0, 0, 0, 0.1);
+}
+form .form-content .input.select .body ul li:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+form .form-content .input.select .body .custom {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 10px 15px;
+}
+form .form-content .input.select .body .custom .custom-content-title {
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+form .form-content .input.select .body .custom .custom-content {
+  display: flex;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  height: 36px;
+}
+form .form-content .input.select .body .custom .custom-content > * {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 8px;
+}
+form .form-content .input.select .body .custom .custom-content .prefix {
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+  pointer-events: none;
+}
+form .form-content .input.select .body .custom .custom-content input {
+  width: 100%;
+}
+form .form-content .input.select .body .custom .custom-content .set-custom {
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+}
+form .form-content .input.select.open .body {
+  display: block;
+}
+form .form-content .input.select.selected .head label {
+  top: 0;
+  font-size: 12px;
+}
+form .form-content .input.select.selected .head .value {
+  display: block;
+}
+form .form-content .input .input-desc {
+  margin-top: 5px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 12px;
+  transition: color 0.4s;
+}
+@media (min-width: 768px) {
+  form .form-content .input.dual {
+    display: flex;
+    padding-top: 0;
+  }
+  form .form-content .input.dual > .input {
+    flex-grow: 1;
+    flex-basis: 0;
+    margin: 0 7px 15px 7px;
+  }
+  form .form-content .input.dual > .input.select .head {
+    margin-bottom: 0;
+  }
+  form .form-content .input.dual > .input:first-child {
+    margin-left: 0;
+  }
+  form .form-content .input.dual > .input:last-child {
+    margin-right: 0;
+  }
+}
+form .form-content .input.no-results .body ul {
+  padding: 0;
+}
+form .form-content .input.no-results .body .custom {
+  border-top: 0;
+}
+
+.block {
+  display: flex;
+  justify-content: center;
+  padding: 70px 0;
+}
+.block .content {
+  width: 100%;
+  max-width: 550px;
+}

@@ -1,0 +1,108 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digitization at Beracah Apartments 1</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+        
+    <!-- Canvas -->
+    <canvas class="orb-canvas"></canvas>
+    <!-- Overlay -->
+    <div class="overlay">
+    <!-- Overlay inner wrapper -->
+    <div class="overlay__inner">
+        <!-- Title -->
+        <h1 class="overlay__title">
+        Digitization at
+        <span class="text">Beracah Apartments 1</span>
+        </h1>
+        <!-- Description -->
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- First Name -->
+            <div class="form-group">
+                <label for="{{ form.First_name.id_for_label }}">First Name:</label>
+                {{ form.First_name }}
+            </div>
+            
+            <!-- Second Name -->
+            <div class="form-group">
+                <label for="{{ form.Second_name.id_for_label }}">Second Name:</label>
+                {{ form.Second_name }}
+            </div>
+            
+            <!-- Phone Number -->
+            <div class="form-group">
+                <label for="{{ form.Phone_number.id_for_label }}">Phone Number:</label>
+                {{ form.Phone_number }}
+            </div>
+            
+            <!-- Email -->
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">Email:</label>
+                {{ form.email }}
+            </div>
+            
+            <!-- ID Number -->
+            <div class="file-path-wrapper">
+                <label for="{{ form.ID_number.id_for_label }}">ID Number:</label>
+                {{ form.ID_number }}
+            </div>
+            
+            <!-- ID Front -->
+            <div class="file-field input-field">
+                <div class="btn">
+                    <span>ID Card Front</span>
+                    {{ form.ID_front |add_class:"class:file-path-wrapper" }}
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
+
+            <!-- ID Back -->
+            <div class="file-field input-field">
+                <div class="btn">
+                    <span>ID Card Back</span>
+                    {{ form.ID_back  |add_class:"class:file-path-wrapper" }}
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
+
+
+                <!-- Signed Contract -->
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Signed Contract</span>
+                        {{ form.Signed_contract |add_class:"class:file-path-wrapper" }}
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
+            <!-- Submit Button -->
+            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+            <i class="material-icons right">send</i>
+  </button>
+        
+            </form>
+
+    </div>
+    </div>
+    <script src="{% static 'script.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</body>
+</html>
